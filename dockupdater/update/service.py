@@ -105,10 +105,13 @@ class Service(AbstractObject):
         except ConnectionError:
             return False
 
-        latest_sha = self._get_digest(latest_image)
-        self._latest_sha = latest_sha
-        self._current_sha = current_sha
-        return current_sha != latest_sha
+        if latest_image is None:
+            return False
+        else:
+            latest_sha = self._get_digest(latest_image)
+            self._latest_sha = latest_sha
+            self._current_sha = current_sha
+            return current_sha != latest_sha
 
     def update(self):
         if not self._latest_sha:
